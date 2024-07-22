@@ -18,7 +18,8 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                bat './jenkins/scripts/deliver.sh'
+                // Ensure that the correct shell interpreter is used
+                bat 'C:\\Program Files\\Git\\bin\\bash.exe -c "./jenkins/scripts/deliver.sh"'
             }
         }
     }
