@@ -23,5 +23,34 @@ pipeline {
                 bat '"C:\\Program Files\\Git\\bin\\bash.exe" -c "./jenkins/scripts/deliver.sh"'
             }
         }
+        pipeline {
+    agent any
+    stages {
+       
+        stage('Clean') {
+            steps {
+               deleteDir()
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                bat 'mvn -B -DskipTests clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'mvn test'
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+       stage('Complet') {
+            steps {
+                echo 'Complete'
+            }
+        }
     }
 }
