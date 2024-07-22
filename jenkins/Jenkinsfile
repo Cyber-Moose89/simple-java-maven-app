@@ -1,35 +1,9 @@
 pipeline {
     agent any
     stages {
-       
-        stage('Build') {
-            steps {
-                bat 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                bat 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('Deliver') {
-            steps {
-                // Using call to ensure correct path and quoting
-                bat '"C:\\Program Files\\Git\\bin\\bash.exe" -c "./jenkins/scripts/deliver.sh"'
-            }
-        }
-        pipeline {
-    agent any
-    stages {
-       
         stage('Clean') {
             steps {
-               deleteDir()
+                deleteDir()
             }
         }
         
@@ -38,6 +12,7 @@ pipeline {
                 bat 'mvn -B -DskipTests clean package'
             }
         }
+        
         stage('Test') {
             steps {
                 bat 'mvn test'
@@ -47,7 +22,16 @@ pipeline {
                     junit 'target/surefire-reports/*.xml'
                 }
             }
-       stage('Complet') {
+        }
+        
+        stage('Deliver') {
+            steps {
+                // Using call to ensure correct path and quoting
+                bat '"C:\\Program Files\\Git\\bin\\bash.exe" -c "./jenkins/scripts/deliver.sh"'
+            }
+        }
+        
+        stage('Complete') {
             steps {
                 echo 'Complete'
             }
